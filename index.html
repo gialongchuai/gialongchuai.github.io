@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tìm tuổi của bạn</title>
+  <link rel="icon" href="./image/turtle.webp" type="image/x-icon" />
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .wrap {
+      margin-top: 100px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .import {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    h1 {
+      text-align: center;
+      color: rgb(163, 34, 82);
+      text-shadow: 0 0 0px #000;
+    }
+
+    #container {
+      max-width: calc(100% - 32px);
+      width: 500px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      background-size: cover;
+      font-size: 20px;
+    }
+
+    #result {
+      width: 60%;
+      margin-top: 50px;
+      position: absolute;
+      color: #65b510;
+      display: block;
+      text-align: left;
+      font-size: 27px;
+      text-shadow: 0 0 0px #000;
+    }
+
+    #progress {
+      width: 300px;
+      height: 20px;
+      border: 1px solid black;
+      display: none;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 35px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    #bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background-color: #65b510;
+    }
+
+    #myImage {
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+      width: 200px;
+      height: 150px;
+    }
+
+    #turtle {
+      position: absolute;
+      top: -18px;
+      left: 0px;
+      transition: all 0s linear;
+      width: 30px;
+      margin-left: -5px;
+    }
+
+    .input-text {
+      font-size: 19px;
+      text-align: center;
+      border-radius: 15px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 70px;
+    }
+
+    .input-text:hover {
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    }
+
+    .button-text {
+      font-size: 17px;
+      border-radius: 15px;
+      border: 1px solid #ccc;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .button-text:hover {
+      opacity: 0.8;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    }
+
+    .text {
+      color: black;
+    }
+
+    @media (min-width: 740px) and (max-width: 1023px) {
+      h1 {
+        font-size: 70px;
+      }
+
+      #container {
+        font-size: 25px;
+        max-width: calc(100% - 32px);
+        margin-top: 150px;
+      }
+
+      .wrap {
+        position: relative;
+      }
+
+      #progress {
+        border-radius: 40px;
+        margin-top: 114px;
+        height: 58px;
+        font-size: 30px;
+        width: 402px;
+      }
+
+      .input-text {
+        font-size: 27px;
+        border-radius: 30px;
+        margin-right: 50px !important;
+        text-align: center;
+        height: 40px;
+      }
+
+      .button-text {
+        font-size: 20px;
+        height: 60px;
+        border-radius: 30px;
+        padding: 12px 30px 12px 30px;
+      }
+
+      #result {
+        font-size: 50px;
+      }
+
+      .image-emoji {
+        margin-left: 30px;
+        width: 100px;
+        position: absolute;
+        top: -110px;
+      }
+
+      #turtle {
+        width: 55px;
+        top: -20px;
+      }
+
+      .text {
+        color: black;
+      }
+    }
+
+    @media (max-width: 739px) {
+      #container {
+        margin-top: 50px;
+        max-width: calc(100% - 32px);
+      }
+
+      .input-text {
+        border: 1px solid black;
+        text-align: center;
+        border-radius: 20px;
+        margin-top: 50px;
+        padding: 10px;
+        height: 29px;
+      }
+
+      .button-text {
+        font-size: 15px;
+        border: 1px solid black;
+        border-radius: 20px;
+        margin-top: 50px;
+        padding: 10px;
+        height: 50px;
+      }
+
+      .text {
+        color: black;
+      }
+    }
+
+    @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+      #result {
+        margin-top: 32px;
+      }
+
+      #container {
+        margin-top: -65px;
+      }
+
+      .text {
+        color: black;
+      }
+    }
+</style>
+  <script>
+    function moveImage() {
+      var img = document.getElementById("myImage");
+      var x = Math.floor(Math.random() * (window.innerWidth - img.width));
+      var y = Math.floor(Math.random() * (window.innerHeight - img.height));
+      img.style.left = x + 'px';
+      img.style.top = y + 'px';
+    }
+    setInterval(moveImage, 2500);
+
+    function submitAge() {
+      var age = document.getElementById("age").value;
+      var result = document.getElementById("result");
+      var progress = document.getElementById("progress");
+      var bar = document.getElementById("bar");
+      result.innerHTML = "";
+      progress.style.display = "block";
+      bar.style.width = "0%";
+      var interval = setInterval(function () {
+        var width = parseInt(bar.style.width);
+        if (width < 100) {
+          width += 20;
+          bar.style.width = width + "%";
+          turtle.style.left = width + "%";
+        } else {
+          clearInterval(interval);
+          if (age === "") {
+            result.innerHTML = "Bạn chưa nhập tuổi kìa!";
+          } else if (age <= 0) {
+            result.innerHTML = "Tuổi bạn nhập không ổn rồi :((";
+          } else {
+            result.innerHTML = "Tuổi của bạn là: " + age + ". Hehehe!";
+          }
+        }
+      }, 1200);
+    }
+
+    function playAudio() {
+      var audio = document.getElementById('myAudio');
+      audio.play();
+      audio.addEventListener('ended', function () {
+        this.currentTime = 0;
+        this.play();
+      });
+    }
+
+    document.addEventListener('touchstart', playAudio);
+    document.addEventListener('mousedown', playAudio);z
+  </script>
+</head>
+<body>
+  <audio id="myAudio" src="./mp3/像极了.mp3" style="visibility: hidden;" loop></audio>
+  <img id="myImage" src="./image/flower.gif" alt="flower">
+  <div id="container">
+    <div>
+      <div class="wrap">
+        <h1>Nhập tuổi của bạn!</h1>
+        <img class="image-emoji" src="./image/beauty-icon.png" alt="">
+      </div>
+
+      <div class="import">
+        <div style="width: 30%;">
+          <input class="input-text" style="display: block;" type="number" id="age">
+        </div>
+        <div style="width: 70%;">
+          <button class="button-text" onclick="submitAge()">
+            <div class="text">Chắc chắn rồi thì ấn vào đây ...</div>
+          </button>
+        </div>
+      </div>
+
+      <div id="progress">
+        <img id="turtle" src="./image/turtle.webp" alt="turtle">
+        <div id="bar"></div>
+      </div>
+      
+      <p id="result"></p>
+    </div>
+  </div>
+</body>
+</html>
